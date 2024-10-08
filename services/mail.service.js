@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
+import BaseError from '../errors/base.error.js'
 
 class MailService {
   constructor() {
@@ -28,7 +29,7 @@ class MailService {
             </div>`,
       })
     } catch (error) {
-      throw new Error(`SMTP config error: ${error}`)
+      throw BaseError.BadRequest(`SMTP config error: ${error}`)
     }
   }
 }

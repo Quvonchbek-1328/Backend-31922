@@ -1,7 +1,7 @@
 import authService from '../services/auth.service.js'
 
 class AuthController {
-  async signup(req, res) {
+  async signup(req, res, next) {
     try {
       const user = await authService.signup(req.body)
       res.cookie('refreshToken', user.refreshToken, {
@@ -11,10 +11,10 @@ class AuthController {
       })
       res.status(201).json(user)
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
-  async signin(req, res) {
+  async signin(req, res, next) {
     try {
       const user = await authService.signin(req.body)
       res.cookie('refreshToken', user.refreshToken, {
@@ -24,35 +24,35 @@ class AuthController {
       })
       res.status(200).json(user)
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
-  async signout(req, res) {
+  async signout(req, res, next) {
     try {
       await authService.signout(req.cookies.refreshToken)
       res.clearCookie('refreshToken')
       res.status(200).json({ message: 'User signed out successfully' })
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
-  async getUser(req, res) {
+  async getUser(req, res, next) {
     try {
       const user = await authService.getUser(req.params.id)
       res.status(200).json(user)
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
-  async getUsers(req, res) {
+  async getUsers(req, res, next) {
     try {
       const users = await authService.getUsers()
       res.status(200).json(users)
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
-  async refresh(req, res) {
+  async refresh(req, res, next) {
     try {
       const user = await authService.refresh(req.cookies.refreshToken)
       res.cookie('refreshToken', user.refreshToken, {
@@ -62,10 +62,10 @@ class AuthController {
       })
       res.status(200).json(user)
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
-  async forgotPass(req, res) {
+  async forgotPass(req, res, next) {
     try {
       const confirmationCode = await authService.forgotPass(req.body.email)
       res.cookie('confirmationCode', confirmationCode, {
@@ -75,15 +75,15 @@ class AuthController {
       })
       res.status(200).json({ message: `Confirmatiion code has just send to ${req.body.email}` })
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
-  async setNewPass(req, res) {
+  async setNewPass(req, res, next) {
     try {
       await authService.setNewPass(req.body.token, req.body.pass)
       res.status(200).json({ message: 'Password updated successfully' })
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
 }
