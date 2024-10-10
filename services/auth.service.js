@@ -30,7 +30,7 @@ class AuthService {
     await tokenService.removeRefreshToken(refreshToken)
   }
   async getUser(userId) {
-    const user = await userModel.findById(userId)
+    const user = await userModel.findById(userId).populate('boards')
     const userDto = new UserDto(user)
     return { user: userDto }
   }
@@ -59,8 +59,14 @@ class AuthService {
   async setNewPass(accessToken, pass) {
     const userPayload = tokenService.validateAccessToken(accessToken)
     if (!userPayload) throw BaseError.UnauthorizedError()
-      const hashedPass = await bcrypt.hash(pass, 10)
+    const hashedPass = await bcrypt.hash(pass, 10)
     await userModel.findByIdAndUpdate(userPayload.id, { pass: hashedPass })
+  }
+  async addBoard(userId, boardId) {
+    await userModel.findByIdAndUpdate(userId, { $push: { boards: boardId } })
+  }
+  async deleteBoard(userId, boardId) {
+    await userModel.findByIdAndUpdate(userId, { $pull: { boards: boardId } })
   }
 }
 

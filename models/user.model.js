@@ -6,6 +6,7 @@ const userSchema = new Schema(
     email: { type: String, required: true },
     pass: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    boards: [{ type: Schema.ObjectId, ref: 'Board' }],
   },
   { timestamps: true }
 )

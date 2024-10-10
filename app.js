@@ -7,6 +7,9 @@ import authRouter from './routes/auth.route.js'
 import boardRouter from './routes/board.route.js'
 import taskRouter from './routes/task.router.js'
 import errorMiddleware from './middlewares/error.middleware.js'
+import boardRouter from './routes/board.route.js'
+import projectRouter from './routes/project.route.js'
+import taskRouter from './routes/task.route.js'
 
 const app = express()
 
@@ -18,6 +21,10 @@ app.use(cookieParser())
 
 app.use('/api/auth', authRouter)
 app.use('/api/board', boardRouter)
+<<<<<<< HEAD
+=======
+app.use('/api/project', projectRouter)
+>>>>>>> 39745dd1edeb9abe98bf288b1c92241b1504fa1a
 app.use('/api/task', taskRouter)
 
 app.use(errorMiddleware)
